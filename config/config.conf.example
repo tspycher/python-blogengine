@@ -1,0 +1,28 @@
+[site]
+twitter = hansolo
+facebook = hansolo
+name = Han Solo's Blog
+author = Han Solo
+avatar = url_to_picture
+cover_photo = url_to_picture
+disqus = hansolo
+base_url =
+analytics =
+googleplus =
+linkedin =
+atom_url =
+
+[evernote]
+token = xxxxxxx # get here: https://www.evernote.com/api/DeveloperToken.action
+sandbox = 1 # or remove line to disable sandbox
+tag = blog
+tag_published = published
+
+[ftp]
+host = hostname
+username = username
+password = very_secure_password
+basepath = /
+
+[website]
+themepath = ./theme

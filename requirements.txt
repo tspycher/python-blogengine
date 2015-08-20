@@ -1,0 +1,11 @@
+Jinja2==2.8
+MarkupSafe==0.23
+Unidecode==0.04.18
+backports.ssl-match-hostname==3.4.0.2
+certifi==2015.04.28
+evernote==1.25.1
+httplib2==0.9.1
+oauth2==1.5.211
+python-slugify==1.1.3
+tornado==4.2.1
+wsgiref==0.1.2

@@ -1,0 +1,94 @@
+<project name="python-blogengine" default="build" basedir=".">
+    <description>
+        Builds the Blogengine
+    </description>
+
+    <!-- set global properties for this build -->
+    <property name="src" location="blogengine"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="python" location="/usr/bin/python"/>
+    <property name="pip" location="/usr/local/bin/pip"/>
+
+    <!--
+        <property environment="env"/>
+        <property name="virtenv" location="${env.VIRTUAL_ENV}" />
+        <property name="python" location="${virtenv}/bin/python"/>
+        <property name="pip" location="${virtenv}/bin/pip"/>
+        <echo message="Virtual Env is in: ${env.VIRTUAL_ENV}" />
+    -->
+    <property name="BUILD_TAG" value="dev"/>
+    <property name="VERSION" value="0.1.0"/>
+    <tstamp>
+        <format property="env.BUILD_NUMBER" pattern="yyyyMMddhhmm"/>
+    </tstamp>
+
+    <target name="publish" depends="_tag,_publish" />
+
+    <target name="_publish" depends="">
+        <exec executable="${python}">
+            <arg value="setup.py"/>
+            <arg value="sdist"/>
+            <arg value="bdist_wheel"/>
+            <arg value="upload"/>
+            <arg value="-r"/>
+            <arg value="local"/>
+        </exec>
+    </target>
+
+    <target name="_init" depends="_clean">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+
+        <!--<exec executable="${pip}">
+            <arg value="install"/>
+            <arg value="wheel"/>
+        </exec>
+        <exec executable="${pip}">
+            <arg value="install"/>
+            <arg value="twine"/>
+        </exec>-->
+    </target>
+
+    <target name="build" depends="_init,doc"
+            description="compile the source ">
+        <!--<exec executable="${pip}">
+            <arg value="freeze"/>
+        </exec>-->
+        <exec executable="${python}">
+            <arg value="setup.py"/>
+            <arg value="sdist"/>
+            <arg value="bdist_wheel"/>
+        </exec>
+        <!--<antcall target="tag" /> -->
+    </target>
+
+    <target name="doc" description="builds the sphinx documentation">
+        <!--<exec executable="make">
+            <arg value="-C"/>
+            <arg value="${basedir}/doc"/>
+            <arg value="html"/>
+        </exec>
+        <copydir src="${basedir}/doc/_build/html" dest="${basedir}/doc/html" />-->
+    </target>
+
+    <target name="_tag" description="Creates a git tag for the given repository">
+        <exec executable="git">
+            <arg value="tag"/>
+            <arg value="-a"/>
+            <arg value="v${VERSION}.${env.BUILD_NUMBER}"/>
+            <arg value="-m"/>
+            <arg value="'tag created by ant ${VERSION}.${env.BUILD_NUMBER}'"/>
+        </exec>
+    </target>
+
+    <target name="_clean"
+            description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+        <delete dir="${basedir}/doc/_build"/>
+    </target>
+</project>
