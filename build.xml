@@ -31,8 +31,8 @@
             <arg value="sdist"/>
             <arg value="bdist_wheel"/>
             <arg value="upload"/>
-            <arg value="-r"/>
-            <arg value="local"/>
+            <!--<arg value="-r"/>
+            <arg value="local"/>-->
         </exec>
     </target>
 

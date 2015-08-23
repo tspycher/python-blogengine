@@ -7,6 +7,7 @@ class Site(BaseEntity):
     base_url = None
     author = None
     name = None
+    description = None
     analytics = None
     cover_photo = None
     twitter = None
