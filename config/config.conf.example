@@ -11,7 +11,7 @@ base_url =
 analytics =
 googleplus =
 linkedin =
-atom_url =
+timezone = 'Europe/Zurich'
 
 [evernote]
 token = xxxxxxx # get here: https://www.evernote.com/api/DeveloperToken.action

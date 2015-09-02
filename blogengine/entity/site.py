@@ -16,6 +16,7 @@ class Site(BaseEntity):
     linkedin = None
     rss_url = None
     avatar = None
+    timezone = 'Europe/Zurich'
 
     def __init__(self, **kwargs):
         for k in kwargs.keys():

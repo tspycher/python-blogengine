@@ -1,5 +1,6 @@
 import os, sys
 import time
+import pytz
 from output import Output
 from . import getLogger
 from feedgen.feed import FeedGenerator
@@ -20,14 +21,10 @@ class BlogEngine(object):
         if rss:
             self.site.rss_url = '/rss.xml'
             fg = FeedGenerator()
-            #fg.id('http://lernfunk.de/media/654321')
             fg.title(self.site.name)
-            fg.author( {'name':self.site.author} )
-            fg.link( href=self.site.base_url, rel='alternate' )
-            #fg.logo('http://ex.com/logo.jpg')
+            fg.author({'name': self.site.author})
+            fg.link(href=self.site.base_url, rel='alternate')
             fg.subtitle(self.site.description)
-            #fg.link( href='http://larskiesow.de/test.atom', rel='self' )
-            fg.language('en')
 
         start = time.time()
         getLogger().info("Copy Assets")
@@ -43,9 +40,14 @@ class BlogEngine(object):
             posts.append(p)
             if rss:
                 fe = fg.add_entry()
-                fe.id(p.permalink)
+                fe.id("%s/%s" % (self.site.base_url,p.permalink))
                 fe.title(p.title)
-                fe.content(self.output.render(self.site, post=p))
+                fe.published(p.created_at.replace(tzinfo=pytz.timezone(self.site.timezone)))
+                category = []
+                for t in p.tags:
+                    category.append({'term': t})
+                fe.category(category)
+                fe.content(p.content)
 
             Output.storeData(os.path.join(self.basedir, p.permalink), self.output.render(self.site, post=p))
             getLogger().debug("Adding Post \"%s\" (%s)", p.title, p.slug)
