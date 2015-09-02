@@ -2,6 +2,7 @@ import os, sys
 import time
 from output import Output
 from . import getLogger
+from feedgen.feed import FeedGenerator
 
 class BlogEngine(object):
     source = None
@@ -15,7 +16,19 @@ class BlogEngine(object):
         self.output = output
         self.basedir = basedir
 
-    def build(self):
+    def build(self, rss=False):
+        if rss:
+            self.site.rss_url = '/rss.xml'
+            fg = FeedGenerator()
+            #fg.id('http://lernfunk.de/media/654321')
+            fg.title(self.site.name)
+            fg.author( {'name':self.site.author} )
+            fg.link( href=self.site.base_url, rel='alternate' )
+            #fg.logo('http://ex.com/logo.jpg')
+            fg.subtitle(self.site.description)
+            #fg.link( href='http://larskiesow.de/test.atom', rel='self' )
+            fg.language('en')
+
         start = time.time()
         getLogger().info("Copy Assets")
         self.output.copyAssets(self.basedir)
@@ -28,11 +41,22 @@ class BlogEngine(object):
                 continue
 
             posts.append(p)
+            if rss:
+                fe = fg.add_entry()
+                fe.id(p.permalink)
+                fe.title(p.title)
+                fe.content(self.output.render(self.site, post=p))
+
             Output.storeData(os.path.join(self.basedir, p.permalink), self.output.render(self.site, post=p))
             getLogger().debug("Adding Post \"%s\" (%s)", p.title, p.slug)
 
         posts = sorted(posts, key=lambda k: k.created_at, reverse=True)
         Output.storeData(os.path.join(self.basedir, 'index.html'), self.output.render(self.site, posts=posts, post=None, is_home=True, pagination=None))
+
+        if rss:
+            Output.storeData(os.path.join(self.basedir, 'rss.xml'), fg.rss_str(pretty=True))
+            getLogger().debug("You awesome RSS feed has been generated")
+
 
         getLogger().info("It took %d seconds to generate your awesome blog" % (time.time() - start))
 

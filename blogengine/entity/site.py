@@ -14,7 +14,7 @@ class Site(BaseEntity):
     facebook = None
     googleplus = None
     linkedin = None
-    atom_url = None
+    rss_url = None
     avatar = None
 
     def __init__(self, **kwargs):

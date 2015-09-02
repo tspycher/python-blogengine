@@ -33,6 +33,7 @@ def main():
     parser.add_argument('-o', '--output', action='store', dest="output", default='website')
     parser.add_argument('-w', '--webserver', action='store_true', dest="webserver", default=False)
     parser.add_argument('-f', '--ftp', action='store_true', dest="ftp", default=False)
+    parser.add_argument('-r', '--rss', action='store_true', dest="rss", default=False)
 
     parser.add_argument('-O', '--output-dir', action='store', dest='output_dir', default='./output')
     args = parser.parse_args()
@@ -52,7 +53,7 @@ def main():
 
     # Building and running the site
     engine = BlogEngine(site=site, source=sourceObj, output=outputObj, basedir=args.output_dir)
-    engine.build()
+    engine.build(rss=True)
 
     # upload the build if needed
     if args.ftp:
