@@ -41,7 +41,7 @@ class BlogEngine(object):
             if rss:
                 fe = fg.add_entry()
                 fe.id("%s/%s" % (self.site.base_url, p.permalink))
-                fg.link(href=fe.id, rel='alternate')
+                fe.link(href=fe.id(), rel='alternate')
                 fe.title(p.title)
                 fe.published(p.created_at.replace(tzinfo=pytz.timezone(self.site.timezone)))
                 category = []

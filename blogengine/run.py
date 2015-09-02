@@ -53,7 +53,7 @@ def main():
 
     # Building and running the site
     engine = BlogEngine(site=site, source=sourceObj, output=outputObj, basedir=args.output_dir)
-    engine.build(rss=True)
+    engine.build(rss=args.rss)
 
     # upload the build if needed
     if args.ftp:
