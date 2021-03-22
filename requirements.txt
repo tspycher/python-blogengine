@@ -8,7 +8,7 @@ dateutils==0.6.6
 evernote==1.25.1
 feedgen==0.3.1
 httplib2==0.9.1
-lxml==3.4.4
+lxml==4.6.3
 oauth2==1.5.211
 python-dateutil==2.4.2
 python-slugify==1.1.3
